@@ -26,13 +26,13 @@ public class Main extends MapActivity implements LocationListener {
         
         // add zoom support (buttons)
         mapView.setBuiltInZoomControls(true);
-        // show street names
+        // show traffic
         mapView.setTraffic(true);
         mapView.preLoad();
         
-//        try {
-//        	manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this);
-//        } catch (Exception e){}
+        try {
+        	manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this);
+        } catch (Exception e){}
     }
     
 
@@ -47,8 +47,8 @@ public class Main extends MapActivity implements LocationListener {
 	public void onLocationChanged(Location loc) {
 //		manager.removeUpdates(this);
 		GeoPoint point = new GeoPoint(
-				(int)loc.getLatitude() * 1000000, 
-				(int)loc.getLongitude() * 1000000);
+				(int)(loc.getLatitude() * 1000000), 
+				(int)(loc.getLongitude() * 1000000));
 		
 		mapView.getController().animateTo(point);
 	}
