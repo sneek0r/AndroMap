@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:icon="@drawable/ic_menu_mylocation" android:title="Follow Me" android:id="@+id/menu_follow_me"></item>
+<item android:icon="@drawable/ic_menu_mapmode" android:title="Map mode" android:id="@+id/menu_map_mode"></item>
+</menu>

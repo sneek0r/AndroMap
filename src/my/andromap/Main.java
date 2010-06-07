@@ -5,6 +5,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -14,6 +18,8 @@ public class Main extends MapActivity implements LocationListener {
 	
 	public LocationManager manager;
 	public MapView mapView;
+	
+	public boolean UPDATE_LOCATION = false;
 	
     /** Called when the activity is first created. */
     @Override
@@ -29,10 +35,6 @@ public class Main extends MapActivity implements LocationListener {
         // show traffic
         mapView.setTraffic(true);
         mapView.preLoad();
-        
-        try {
-        	manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this);
-        } catch (Exception e){}
     }
     
 
@@ -45,7 +47,6 @@ public class Main extends MapActivity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location loc) {
-//		manager.removeUpdates(this);
 		GeoPoint point = new GeoPoint(
 				(int)(loc.getLatitude() * 1000000), 
 				(int)(loc.getLongitude() * 1000000));
@@ -76,7 +77,47 @@ public class Main extends MapActivity implements LocationListener {
 	
 	@Override
 	protected void onDestroy() {
-		this.manager.removeUpdates(this);
+		this.locationUpdates(null);
 		super.onDestroy();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.menu_follow_me:
+	    	return this.locationUpdates(LocationManager.GPS_PROVIDER);
+	    case R.id.menu_map_mode:
+	    	break;
+	    default:
+	    	break;
+	    }
+	    return false;
+	}
+	
+	public boolean locationUpdates(String provider) {
+		
+		try {
+			CharSequence message;
+			if (!UPDATE_LOCATION || provider != null) {
+				this.manager.requestLocationUpdates(provider, 10000, 10, this);
+				message = "Location updates requested!";
+			} else { 
+				this.manager.removeUpdates(this);
+				message = "Location updates removed";
+			}
+			Toast.makeText(getApplicationContext(), message, 3).show();
+			this.UPDATE_LOCATION = !this.UPDATE_LOCATION;
+        	return true;
+        } catch (Exception e) {
+        	System.err.println(e.getMessage());
+        	return false;
+        }
 	}
 }
