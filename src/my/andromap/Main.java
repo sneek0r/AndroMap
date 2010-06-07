@@ -45,7 +45,6 @@ public class Main extends MapActivity implements LocationListener {
 	}
 
 
-	@Override
 	public void onLocationChanged(Location loc) {
 		GeoPoint point = new GeoPoint(
 				(int)(loc.getLatitude() * 1000000), 
@@ -55,21 +54,18 @@ public class Main extends MapActivity implements LocationListener {
 	}
 
 
-	@Override
 	public void onProviderDisabled(String arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
 	public void onProviderEnabled(String arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
 		
@@ -105,12 +101,12 @@ public class Main extends MapActivity implements LocationListener {
 		
 		try {
 			CharSequence message;
-			if (!UPDATE_LOCATION || provider != null) {
+			if (!UPDATE_LOCATION && provider != null) {
 				this.manager.requestLocationUpdates(provider, 10000, 10, this);
 				message = "Location updates requested!";
 			} else { 
 				this.manager.removeUpdates(this);
-				message = "Location updates removed";
+				message = "Location updates removed!";
 			}
 			Toast.makeText(getApplicationContext(), message, 3).show();
 			this.UPDATE_LOCATION = !this.UPDATE_LOCATION;
