@@ -1,6 +1,8 @@
 package my.andromap;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -90,9 +92,45 @@ public class Main extends MapActivity implements LocationListener {
 	    case R.id.menu_follow_me:
 	    	return this.locationUpdates(LocationManager.GPS_PROVIDER);
 	    case R.id.menu_map_mode:
-	    	break;
-	    default:
-	    	break;
+	    	final CharSequence[] items = {"Traffic", "Satellite", "Street"};
+
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    	builder.setTitle("Select a map view");
+	    	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+	    	    public void onClick(DialogInterface dialog, int item) {
+	    	    	switch (item) {
+					case 0:
+						mapView = (MapView)findViewById(R.id.mapview);
+						mapView.setTraffic(true);
+//						mapView.setSatellite(false);
+//						mapView.setStreetView(false);
+						mapView.postInvalidate();
+						mapView.preLoad();
+						break;
+					case 1:
+						mapView = (MapView)findViewById(R.id.mapview);
+						mapView.setSatellite(true);
+//						mapView.setTraffic(false);
+//						mapView.setStreetView(false);
+						mapView.postInvalidate();
+						mapView.preLoad();
+						break;
+					case 2:
+						mapView = (MapView)findViewById(R.id.mapview);
+						mapView.setStreetView(true);
+//						mapView.setTraffic(false);
+//						mapView.setSatellite(false);
+						mapView.postInvalidate();
+						mapView.preLoad();
+						break;
+					default:
+						break;
+					}
+	    	    }
+	    	});
+	    	AlertDialog alert = builder.create();
+	    	alert.show();
+	    	return true;
 	    }
 	    return false;
 	}
