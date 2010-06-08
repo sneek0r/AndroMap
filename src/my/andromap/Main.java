@@ -1,5 +1,7 @@
 package my.andromap;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
 
 public class Main extends MapActivity implements LocationListener {
 	
@@ -90,7 +94,7 @@ public class Main extends MapActivity implements LocationListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.menu_follow_me:
-	    	return this.locationUpdates(LocationManager.GPS_PROVIDER);
+	        return this.locationUpdates(LocationManager.GPS_PROVIDER);
 	    case R.id.menu_map_mode:
 	    	final CharSequence[] items = {"Traffic", "Satellite", "Street"};
 
@@ -102,24 +106,24 @@ public class Main extends MapActivity implements LocationListener {
 					case 0:
 						mapView = (MapView)findViewById(R.id.mapview);
 						mapView.setTraffic(true);
-//						mapView.setSatellite(false);
-//						mapView.setStreetView(false);
+						mapView.setSatellite(false);
+						mapView.setStreetView(false);
 						mapView.postInvalidate();
 						mapView.preLoad();
 						break;
 					case 1:
 						mapView = (MapView)findViewById(R.id.mapview);
 						mapView.setSatellite(true);
-//						mapView.setTraffic(false);
-//						mapView.setStreetView(false);
+						mapView.setTraffic(false);
+						mapView.setStreetView(false);
 						mapView.postInvalidate();
 						mapView.preLoad();
 						break;
 					case 2:
 						mapView = (MapView)findViewById(R.id.mapview);
 						mapView.setStreetView(true);
-//						mapView.setTraffic(false);
-//						mapView.setSatellite(false);
+						mapView.setTraffic(false);
+						mapView.setSatellite(false);
 						mapView.postInvalidate();
 						mapView.preLoad();
 						break;
@@ -140,10 +144,30 @@ public class Main extends MapActivity implements LocationListener {
 		try {
 			CharSequence message;
 			if (!UPDATE_LOCATION && provider != null) {
+				// ENABLE
+				// manually draw your location
 				this.manager.requestLocationUpdates(provider, 10000, 10, this);
-				message = "Location updates requested!";
+				
+				// MyLocationOverlay example
+				MyLocationOverlay mlo = new MyLocationOverlay(getApplicationContext(), mapView);
+		        mlo.enableMyLocation();
+		        mlo.enableCompass();
+		        List<Overlay> overlays = mapView.getOverlays();
+		        overlays.add(mlo);
+		        
+		        message = "Location updates requested!";
 			} else { 
+				// DISABLE
+				// manually draw your location
 				this.manager.removeUpdates(this);
+				
+				// MyLocationOverlay example
+				for (Overlay ov : mapView.getOverlays()) {
+					if (ov instanceof MyLocationOverlay) {
+						((MyLocationOverlay) ov).disableMyLocation();
+						((MyLocationOverlay) ov).disableCompass();
+					}
+				}
 				message = "Location updates removed!";
 			}
 			Toast.makeText(getApplicationContext(), message, 3).show();
