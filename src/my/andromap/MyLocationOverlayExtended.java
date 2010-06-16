@@ -1,12 +1,6 @@
 package my.andromap;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.widget.Toast;
 
