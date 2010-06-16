@@ -27,7 +27,7 @@ public class MyLocationOverlayExtended extends MyLocationOverlay {
 	
 	protected  boolean 	dispatchTap() {
 		GeoPoint p = this.getMyLocation();
-		String message = "My Llocation is: " + 
+		String message = "My location is: " + 
 						 Location.convert(p.getLongitudeE6() / 1E6, Location.FORMAT_DEGREES) + ", " +
 		 				 Location.convert(p.getLatitudeE6() / 1E6, Location.FORMAT_DEGREES);
 		Toast.makeText(this.context, message, 3).show();
