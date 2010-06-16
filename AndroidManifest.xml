@@ -14,11 +14,11 @@
 
     	<!-- needed for GoogleMaps -->
         <uses-library android:name="com.google.android.maps" />
-
+        
     </application>
     <uses-sdk android:minSdkVersion="7" />
 	
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
 </manifest> 

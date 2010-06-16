@@ -41,6 +41,8 @@ public class Main extends MapActivity implements LocationListener {
         // show traffic
         mapView.setTraffic(true);
         mapView.preLoad();
+        MyOverlay adrOv = new MyOverlay();
+        mapView.getOverlays().add(adrOv);
     }
     
 
@@ -149,21 +151,19 @@ public class Main extends MapActivity implements LocationListener {
 				this.manager.requestLocationUpdates(provider, 10000, 10, this);
 				
 				// MyLocationOverlay example
-				MyLocationOverlay mlo = new MyLocationOverlay(getApplicationContext(), mapView);
-		        mlo.enableMyLocation();
-		        mlo.enableCompass();
-		        List<Overlay> overlays = mapView.getOverlays();
-		        overlays.add(mlo);
+				MyLocationOverlayExtended myOverlay = new MyLocationOverlayExtended(getApplicationContext(), mapView);
+		        myOverlay.enableMyLocation();
+		        myOverlay.enableCompass();
+		        mapView.getOverlays().add(myOverlay);;
 		        
 		        message = "Location updates requested!";
 			} else { 
 				// DISABLE
-				// manually draw your location
 				this.manager.removeUpdates(this);
 				
-				// MyLocationOverlay example
+				// MyOverlay example
 				for (Overlay ov : mapView.getOverlays()) {
-					if (ov instanceof MyLocationOverlay) {
+					if (ov instanceof MyLocationOverlayExtended) {
 						((MyLocationOverlay) ov).disableMyLocation();
 						((MyLocationOverlay) ov).disableCompass();
 					}
