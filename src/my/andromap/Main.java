@@ -22,7 +22,6 @@ import com.google.android.maps.Overlay;
 
 public class Main extends MapActivity implements LocationListener {
 	
-	public LocationManager manager;
 	public MapView mapView;
 	
 	public boolean UPDATE_LOCATION = false;
@@ -33,7 +32,6 @@ public class Main extends MapActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapView = (MapView)findViewById(R.id.mapview);
         
         // add zoom support (buttons)
@@ -79,8 +77,8 @@ public class Main extends MapActivity implements LocationListener {
 	
 	@Override
 	protected void onDestroy() {
-		this.locationUpdates(null);
 		super.onDestroy();
+		this.locationUpdates(null);
 	}
 	
 	@Override
@@ -142,11 +140,12 @@ public class Main extends MapActivity implements LocationListener {
 	public boolean locationUpdates(String provider) {
 		
 		try {
+			LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			CharSequence message;
 			if (!UPDATE_LOCATION && provider != null) {
 				// ENABLE
 				// manually draw your location
-				this.manager.requestLocationUpdates(provider, 10000, 10, this);
+				manager.requestLocationUpdates(provider, 10000, 10, this);
 				
 				// MyLocationOverlay example
 				MyLocationOverlay mlo = new MyLocationOverlay(getApplicationContext(), mapView);
@@ -159,7 +158,7 @@ public class Main extends MapActivity implements LocationListener {
 			} else { 
 				// DISABLE
 				// manually draw your location
-				this.manager.removeUpdates(this);
+				manager.removeUpdates(this);
 				
 				// MyLocationOverlay example
 				for (Overlay ov : mapView.getOverlays()) {
